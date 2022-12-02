@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnityEngine;
 
 [RequireComponent(typeof(RectTransform))]
@@ -23,6 +24,8 @@ internal class Board : MonoBehaviour
     public static Board Instance { get; private set; }
     public BoardStates State { get; private set; }
     public List<Tile> PossibleTiles => _tiles.ToList();
+
+    public event System.Action<bool> OnBonusEnd;
 
 
     private void Awake()
@@ -48,12 +51,31 @@ internal class Board : MonoBehaviour
         {
             for (int y = 0; y < _ySize; y++)
             {
+                List<Tile> possibleTiles = new List<Tile>();
+                possibleTiles.AddRange(_tiles);
+
+                if (x > 1)
+                {
+                    if (_tileViews[x - 1, y].Tile == _tileViews[x - 2, y].Tile)
+                    {
+                        possibleTiles.Remove(_tileViews[x - 1, y].Tile);
+                    }
+                }
+
+                if (y > 1)
+                {
+                    if (_tileViews[x, y - 1].Tile == _tileViews[x, y - 2].Tile)
+                    {
+                        possibleTiles.Remove(_tileViews[x, y - 1].Tile);
+                    }
+                }
+
                 TileView newTile = Instantiate(
                     _tilePrefab,
                     transform.position,
                     Quaternion.identity,
                     transform);
-                newTile.RandomizeType();
+                newTile.RandomizeType(possibleTiles);
                 newTile.Scale(Mathf.Min(_xScale, _yScale));
                 newTile.transform.localPosition = new Vector3(
                         (_xScale * x - _width / 2 + _xScale / 2),
@@ -68,6 +90,13 @@ internal class Board : MonoBehaviour
         Tile tempTile = tile1.Tile;
         tile1.Tile = tile2.Tile;
         tile2.Tile = tempTile;
+
+        if (!IsThereMatches())
+        {
+            tempTile = tile1.Tile;
+            tile1.Tile = tile2.Tile;
+            tile2.Tile = tempTile;
+        }
     }
 
     private TileView GetAdjacent(TileView tileView, Vector2 direction)
@@ -100,6 +129,26 @@ internal class Board : MonoBehaviour
         return adjacentTiles;
     }
 
+    private void FillNulls()
+    {
+        StopCoroutine(FindNullTiles());
+        StartCoroutine(FindNullTiles());
+    }
+
+    private bool IsThereMatches()
+    {
+        _isMatchFound = false;
+        for (int x = 0; x < _xSize; x++)
+        {
+            for (int y = 0; y < _ySize; y++)
+            {
+                FindAllMatchesForTile(_tileViews[x, y], false);
+            }
+        }
+        return _isMatchFound;
+    }
+
+
     private List<TileView> CheckMatchForTileInDirection(TileView tileView, Vector2 direction)
     {
         List<TileView> matchingTiles = new List<TileView>();
@@ -118,7 +167,7 @@ internal class Board : MonoBehaviour
         return matchingTiles;
     }
 
-    private void FindMatchesForTile(TileView tileView, Vector2[] paths)
+    private void FindMatchesForTile(TileView tileView, Vector2[] paths, bool isDestroyingFound = true)
     {
         List<TileView> matchingTiles = new List<TileView>();
         for (int i = 0; i < paths.Length; i++)
@@ -128,27 +177,31 @@ internal class Board : MonoBehaviour
 
         if (matchingTiles.Count >= 2)
         {
-            tileView.Tile.Mana += matchingTiles.Count - 1;
-            ClearMatch(matchingTiles);            
+            _isMatchFound = true;
+
+            if (isDestroyingFound)
+            {
+                _isMatchFound = true;
+                tileView.Tile.Mana += matchingTiles.Count - 1;
+                ClearMatch(matchingTiles);
+            }
         }
     }
 
-    public void FindAllMatchesForTile(TileView tileView)
+    public void FindAllMatchesForTile(TileView tileView, bool isDestroynigFound = true)
     {
         if (tileView.Tile == null)
             return;
 
-        FindMatchesForTile(tileView, new Vector2[2] { Vector2.left, Vector2.right });
-        FindMatchesForTile(tileView, new Vector2[2] { Vector2.up, Vector2.down });
+        FindMatchesForTile(tileView, new Vector2[2] { Vector2.left, Vector2.right }, isDestroynigFound);
+        FindMatchesForTile(tileView, new Vector2[2] { Vector2.up, Vector2.down }, isDestroynigFound);
 
-        if (_isMatchFound)
+        if (isDestroynigFound && _isMatchFound)
         {
             tileView.Destroy();
             _isMatchFound = false;
 
-            
-            StopCoroutine(FindNullTiles());
-            StartCoroutine(FindNullTiles());
+            FillNulls();
         }
     }
 
@@ -158,7 +211,6 @@ internal class Board : MonoBehaviour
         {
             matchingTiles[i].GetComponent<TileView>().Destroy();
         }
-        _isMatchFound = true;
     }
 
     public IEnumerator FindNullTiles()
@@ -184,7 +236,7 @@ internal class Board : MonoBehaviour
         }
     }
 
-    private IEnumerator ShiftTilesDown(int x, int yStart, float shiftDelay = .08f)
+    private IEnumerator ShiftTilesDown(int x, int yStart, float shiftDelay = .055f)
     {
         State = BoardStates.Shifting;
         List<TileView> tiles = new List<TileView>();
@@ -207,6 +259,10 @@ internal class Board : MonoBehaviour
             {
                 tiles[k].Tile = tiles[k + 1].Tile;
                 tiles[k + 1].Tile = GetNewTile(x, _ySize - 1);
+            }
+            if (tiles.Count == 1)
+            {
+                tiles[0].Tile = GetNewTile(x, _ySize - 1);
             }
         }
         State = BoardStates.Game;
@@ -235,7 +291,22 @@ internal class Board : MonoBehaviour
 
     public void SetBonusAndWaitForTile(Bonus bonus)
     {
+        TileView.DeselectAll();
         _bonus = bonus;
         State = BoardStates.BonusAwaiting;
+    }
+
+    public void CancelBonus()
+    {
+        State = BoardStates.Game;
+        _bonus = null;
+    }
+
+    public void ExecuteBonus(TileView tile)
+    {
+        _bonus.Execute(tile, _tileViews);
+        CancelBonus();
+        FillNulls();
+        OnBonusEnd?.Invoke(true);
     }
 }

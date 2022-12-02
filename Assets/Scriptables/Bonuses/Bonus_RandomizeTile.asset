@@ -10,8 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e06cb363c56576247ba729991e501e82, type: 3}
-  m_Name: RandomizeTile
+  m_Name: Bonus_RandomizeTile
   m_EditorClassIdentifier: 
   _name: Tile Randomizer
   _icon: {fileID: 1783808190, guid: 0a9dc808e88e5624393034581390a22a, type: 3}
   _action: {fileID: 11500000, guid: 37151232d5162c34a848aad6f97962eb, type: 3}
+  _price: {fileID: 11400000, guid: 2ec47d811f27a404891d68df9c1f08c8, type: 2}

@@ -74,12 +74,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 21300000, guid: 2122883bc12d46a44b5b99da3f1e0402, type: 3}
+  m_Sprite: {fileID: -1552684844, guid: 55b4ddcfbf6869e4c9c40bb8ec7c9bc0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 2.56, y: 2.56}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -93,7 +93,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5205300987563252154}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 1a9f35c305b43a542b67d8f5af61c27c, type: 2}
   m_CullingMode: 0
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 5479360537212841320}
-  _destroyParticles: {fileID: 2573178588217731284, guid: 257478512e3a58742baf8f356066df42, type: 3}
+  _destroyParticles: {fileID: 3076132786940229757, guid: 257478512e3a58742baf8f356066df42, type: 3}
 --- !u!58 &1662634677916211769
 CircleCollider2D:
   m_ObjectHideFlags: 0

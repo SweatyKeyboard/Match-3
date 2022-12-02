@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TileView : MonoBehaviour
@@ -7,7 +8,6 @@ public class TileView : MonoBehaviour
 
     private Tile _tile;
     private float _scaleInTheBounds = 0.8f;
-    private bool _isSelected = false;
 
     private static TileView _previousTile;
     public Tile Tile 
@@ -40,6 +40,10 @@ public class TileView : MonoBehaviour
                 Deselect();
             }
         }
+        else if (Board.Instance.State == BoardStates.BonusAwaiting)
+        {
+            Board.Instance.ExecuteBonus(this);
+        }
     }
 
     private void Select()
@@ -56,13 +60,12 @@ public class TileView : MonoBehaviour
 
     private void TrySwap()
     {
-        TileView thisTile = this;
-        if (Board.Instance.GetAllAdjacentTiles(_previousTile).Contains(thisTile))
+        if (Board.Instance.GetAllAdjacentTiles(_previousTile).Contains(this))
         {
-            Board.Instance.Swap(thisTile, _previousTile);
+            Board.Instance.Swap(this, _previousTile);
             Board.Instance.FindAllMatchesForTile(_previousTile);
             _previousTile.Deselect();
-            Board.Instance.FindAllMatchesForTile(thisTile);
+            Board.Instance.FindAllMatchesForTile(this);
         }
         else
         {
@@ -91,8 +94,15 @@ public class TileView : MonoBehaviour
         Tile = null;
     }
 
-    public void RandomizeType()
+    public static void DeselectAll()
     {
-        Tile = Board.Instance.PossibleTiles[Random.Range(0, Board.Instance.PossibleTiles.Count)];
+        _previousTile?.Deselect();
     }
+
+    public void RandomizeType(List<Tile> possibleTiles)
+    {
+        Tile = possibleTiles[Random.Range(0, possibleTiles.Count)];
+    }
+
+
 }
