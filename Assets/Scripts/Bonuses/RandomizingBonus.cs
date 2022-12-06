@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-public class RandomizingBonus : Bonus
+public class RandomizingBonus : IBonus
 {
-    public override void Execute(TileView tileView, TileView[,] field)
+    public void Execute(TileView tileView, TileView[,] field)
     {
         List<Tile> tiles = Board.Instance.PossibleTiles;
         tiles.Remove(tileView.Tile);

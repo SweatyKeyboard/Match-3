@@ -13,7 +13,7 @@ internal class Board : MonoBehaviour
 
     private TileView[,] _tileViews;
     private RectTransform rectTransform;
-    private Bonus _bonus;
+    private IBonus _bonus;
 
     private float _width;
     private float _height;
@@ -22,6 +22,7 @@ internal class Board : MonoBehaviour
 
     private bool _isMatchFound;
     public static Board Instance { get; private set; }
+    public TileView[,] TileViews => _tileViews;
     public BoardStates State { get; private set; }
     public List<Tile> PossibleTiles => _tiles.ToList();
 
@@ -91,11 +92,23 @@ internal class Board : MonoBehaviour
         tile1.Tile = tile2.Tile;
         tile2.Tile = tempTile;
 
+        TileCurses tempCurses = tile1.Curses;
+        tile1.Curses = tile2.Curses;
+        tile2.Curses = tempCurses;
+
         if (!IsThereMatches())
         {
             tempTile = tile1.Tile;
             tile1.Tile = tile2.Tile;
             tile2.Tile = tempTile;
+
+            tempCurses = tile1.Curses;
+            tile1.Curses = tile2.Curses;
+            tile2.Curses = tempCurses;
+        }
+        else
+        {
+            TurnsCounter.Instance.Turns++;
         }
     }
 
@@ -174,15 +187,20 @@ internal class Board : MonoBehaviour
         {
             matchingTiles.AddRange(CheckMatchForTileInDirection(tileView, paths[i]));
         }
+        matchingTiles.Add(tileView);
 
-        if (matchingTiles.Count >= 2)
+        if (matchingTiles.Count >= 3)
         {
             _isMatchFound = true;
 
             if (isDestroyingFound)
             {
                 _isMatchFound = true;
-                tileView.Tile.Mana += matchingTiles.Count - 1;
+
+                tileView.Tile.Mana += matchingTiles.Count - 2;
+                ScoreCounter.Instance.Score += matchingTiles.Count - 2;
+                Timer.Instance.SecondsLeft += matchingTiles.Count - 2;
+
                 ClearMatch(matchingTiles);
             }
         }
@@ -198,9 +216,7 @@ internal class Board : MonoBehaviour
 
         if (isDestroynigFound && _isMatchFound)
         {
-            tileView.Destroy();
             _isMatchFound = false;
-
             FillNulls();
         }
     }
@@ -259,10 +275,14 @@ internal class Board : MonoBehaviour
             {
                 tiles[k].Tile = tiles[k + 1].Tile;
                 tiles[k + 1].Tile = GetNewTile(x, _ySize - 1);
+
+                tiles[k].Curses = tiles[k + 1].Curses;
+                tiles[k + 1].Curses = new TileCurses();
             }
             if (tiles.Count == 1)
             {
                 tiles[0].Tile = GetNewTile(x, _ySize - 1);
+                tiles[0].Curses = new TileCurses();
             }
         }
         State = BoardStates.Game;
@@ -289,7 +309,7 @@ internal class Board : MonoBehaviour
         return possibleTiles[Random.Range(0, possibleTiles.Count)];
     }
 
-    public void SetBonusAndWaitForTile(Bonus bonus)
+    public void SetBonusAndWaitForTile(IBonus bonus)
     {
         TileView.DeselectAll();
         _bonus = bonus;
@@ -308,5 +328,6 @@ internal class Board : MonoBehaviour
         CancelBonus();
         FillNulls();
         OnBonusEnd?.Invoke(true);
+        TurnsCounter.Instance.Turns++;
     }
 }

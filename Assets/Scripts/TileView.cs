@@ -6,8 +6,15 @@ public class TileView : MonoBehaviour
     [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private ParticleSystem _destroyParticles;
 
+    [SerializeField] private Transform _iceLayer; 
+
+
     private Tile _tile;
+    private TileCurses _curses = new TileCurses();
+
     private float _scaleInTheBounds = 0.8f;
+
+    private bool _isLocked = false;
 
     private static TileView _previousTile;
     public Tile Tile 
@@ -20,30 +27,65 @@ public class TileView : MonoBehaviour
         }
     }
 
+    public TileCurses Curses
+    {
+        get => _curses;
+        set
+        {
+            _curses = value;
+            CheckCurses();
+        }
+    }
+
+
+    private void Awake()
+    {
+        _curses.OnChanged += CheckCurses;
+    }
+
+    private void OnDestroy()
+    {
+        _curses.OnChanged -= CheckCurses;
+    }
+
     private void OnMouseDown()
     {
         if (Board.Instance.State == BoardStates.Game)
         {
-            if (_previousTile != this)
+            if (!_isLocked)
             {
-                if (_previousTile == null)
+                if (_previousTile != this)
                 {
-                    Select();
+                    if (_previousTile == null)
+                    {
+                        Select();
+                    }
+                    else
+                    {
+                        TrySwap();
+                    }
                 }
                 else
                 {
-                    TrySwap();
+                    Deselect();
                 }
-            }
-            else
-            {
-                Deselect();
             }
         }
         else if (Board.Instance.State == BoardStates.BonusAwaiting)
         {
             Board.Instance.ExecuteBonus(this);
         }
+    }
+    private void CheckCurses()
+    {
+        _isLocked = _curses.IsIced;
+        _iceLayer.gameObject.SetActive(_curses.IsIced);
+    }
+
+    private void ClearCurses()
+    {
+        _curses.ClearCurses();
+        CheckCurses();
     }
 
     private void Select()
@@ -63,8 +105,10 @@ public class TileView : MonoBehaviour
         if (Board.Instance.GetAllAdjacentTiles(_previousTile).Contains(this))
         {
             Board.Instance.Swap(this, _previousTile);
+            _previousTile.CheckCurses();
             Board.Instance.FindAllMatchesForTile(_previousTile);
             _previousTile.Deselect();
+            CheckCurses();
             Board.Instance.FindAllMatchesForTile(this);
         }
         else
@@ -91,6 +135,7 @@ public class TileView : MonoBehaviour
         var particlesMain = particles.main;
         particlesMain.startColor = Tile.Color;
 
+        ClearCurses();
         Tile = null;
     }
 
