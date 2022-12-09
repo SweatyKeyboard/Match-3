@@ -5,7 +5,7 @@ using System;
 [RequireComponent(typeof(TMP_Text))]
 public class Timer : MonoBehaviour
 {
-    private static float _time = 60;
+    private static float _time = 150;
     private TMP_Text _text;
 
     public static Timer Instance { get; private set; }

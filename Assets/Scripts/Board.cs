@@ -21,6 +21,8 @@ internal class Board : MonoBehaviour
     private float _yScale;
 
     private bool _isMatchFound;
+    private int _findNullsMethodExecutedAtOnceCounter = 0;
+
     public static Board Instance { get; private set; }
     public TileView[,] TileViews => _tileViews;
     public BoardStates State { get; private set; }
@@ -37,13 +39,13 @@ internal class Board : MonoBehaviour
         _width = rectTransform.rect.width;
         _height = rectTransform.rect.height;
 
-        CreateBoard();        
+        CreateBoard();
     }
 
     private void CreateBoard()
     {
         _tileViews = new TileView[_xSize, _ySize];
-        
+
         _xScale = _width / _xSize;
         _yScale = _height / _ySize;
 
@@ -86,29 +88,45 @@ internal class Board : MonoBehaviour
         }
     }
 
-    public void Swap(TileView tile1, TileView tile2)
+    public void Swap(TileView tile1, TileView tile2, bool isProhobitedToDoNotMatch = true)
     {
+        bool isChangingCurses = false;
+
         Tile tempTile = tile1.Tile;
         tile1.Tile = tile2.Tile;
         tile2.Tile = tempTile;
 
-        TileCurses tempCurses = tile1.Curses;
-        tile1.Curses = tile2.Curses;
-        tile2.Curses = tempCurses;
-
-        if (!IsThereMatches())
+        if (isProhobitedToDoNotMatch)
         {
-            tempTile = tile1.Tile;
-            tile1.Tile = tile2.Tile;
-            tile2.Tile = tempTile;
-
-            tempCurses = tile1.Curses;
-            tile1.Curses = tile2.Curses;
-            tile2.Curses = tempCurses;
+            if (!IsThereMatches())
+            {
+                tempTile = tile1.Tile;
+                tile1.Tile = tile2.Tile;
+                tile2.Tile = tempTile; 
+            }
+            else
+            {
+                isChangingCurses = true;
+            }
         }
         else
         {
-            TurnsCounter.Instance.Turns++;
+            isChangingCurses = true;
+        }
+
+        if (isChangingCurses)
+        {
+            TileCurses tempCurses = tile1.Curses;
+            tile1.Curses = tile2.Curses;
+            tile2.Curses = tempCurses;
+        }
+    }
+
+    private void CheckAllTileCurses()
+    {
+        foreach (TileView tile in _tileViews)
+        {
+            tile.CheckCurses();
         }
     }
 
@@ -118,21 +136,24 @@ internal class Board : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(tileView.transform.position, direction);
         tileView.gameObject.SetActive(true);
 
-        if (hit.collider?.GetComponent<TileView>())
+
+        TileView tempTileView;
+        if (hit.collider != null &&
+            hit.collider.TryGetComponent(out tempTileView))
         {
-            return hit.collider.GetComponent<TileView>();
+            return tempTileView;
         }
         return null;
     }
 
     public List<TileView> GetAllAdjacentTiles(TileView tileView)
     {
-        Vector2[] adjacentDirections = new Vector2[] 
-        { 
+        Vector2[] adjacentDirections = new Vector2[]
+        {
             Vector2.left,
             Vector2.up,
             Vector2.right,
-            Vector2.down 
+            Vector2.down
         };
         List<TileView> adjacentTiles = new List<TileView>();
         for (int i = 0; i < adjacentDirections.Length; i++)
@@ -148,14 +169,14 @@ internal class Board : MonoBehaviour
         StartCoroutine(FindNullTiles());
     }
 
-    private bool IsThereMatches()
+    private bool IsThereMatches(bool andDestroyThem = false)
     {
         _isMatchFound = false;
         for (int x = 0; x < _xSize; x++)
         {
             for (int y = 0; y < _ySize; y++)
             {
-                FindAllMatchesForTile(_tileViews[x, y], false);
+                FindAllMatchesForTile(_tileViews[x, y], andDestroyThem);
             }
         }
         return _isMatchFound;
@@ -169,7 +190,11 @@ internal class Board : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(tileView.transform.position, direction);
         tileView.gameObject.SetActive(true);
 
-        while (hit.collider != null && hit.collider?.GetComponent<TileView>().Tile == tileView.Tile)
+        TileView tempTileView;
+        while (
+            hit.collider != null &&
+            hit.collider.TryGetComponent(out tempTileView) &&
+            tempTileView.Tile == tileView.Tile)
         {
             matchingTiles.Add(hit.collider.GetComponent<TileView>());
             Collider2D currentTile = hit.collider;
@@ -197,9 +222,18 @@ internal class Board : MonoBehaviour
             {
                 _isMatchFound = true;
 
+                int timeModifier = 1;
+                foreach (TileView matchingTile in matchingTiles)
+                {
+                    if (matchingTile.Effects.IsTriplingTime)
+                    {
+                        timeModifier *= 3;
+                    }
+                }
+
                 tileView.Tile.Mana += matchingTiles.Count - 2;
                 ScoreCounter.Instance.Score += matchingTiles.Count - 2;
-                Timer.Instance.SecondsLeft += matchingTiles.Count - 2;
+                Timer.Instance.SecondsLeft += (matchingTiles.Count - 2) * timeModifier;
 
                 ClearMatch(matchingTiles);
             }
@@ -208,17 +242,19 @@ internal class Board : MonoBehaviour
 
     public void FindAllMatchesForTile(TileView tileView, bool isDestroynigFound = true)
     {
+
         if (tileView.Tile == null)
             return;
 
         FindMatchesForTile(tileView, new Vector2[2] { Vector2.left, Vector2.right }, isDestroynigFound);
-        FindMatchesForTile(tileView, new Vector2[2] { Vector2.up, Vector2.down }, isDestroynigFound);
+        FindMatchesForTile(tileView, new Vector2[2] { Vector2.up, Vector2.down }, isDestroynigFound);      
 
         if (isDestroynigFound && _isMatchFound)
         {
-            _isMatchFound = false;
+            _isMatchFound = false; 
             FillNulls();
         }
+
     }
 
     private void ClearMatch(List<TileView> matchingTiles)
@@ -231,6 +267,8 @@ internal class Board : MonoBehaviour
 
     public IEnumerator FindNullTiles()
     {
+        _findNullsMethodExecutedAtOnceCounter++;
+
         for (int x = 0; x < _xSize; x++)
         {
             for (int y = 0; y < _ySize; y++)
@@ -246,20 +284,32 @@ internal class Board : MonoBehaviour
         for (int x = 0; x < _xSize; x++)
         {
             for (int y = 0; y < _ySize; y++)
-            { 
-                 FindAllMatchesForTile(_tileViews[x, y]);
+            {
+                FindAllMatchesForTile(_tileViews[x, y]);
             }
         }
+
+        _findNullsMethodExecutedAtOnceCounter--;
+
+        if (_findNullsMethodExecutedAtOnceCounter == 0)
+        {
+            TurnsCounter.Instance.Turns++;
+            CheckMovingTiles();
+            
+            CheckAllTileCurses();
+        }
+
     }
 
     private IEnumerator ShiftTilesDown(int x, int yStart, float shiftDelay = .055f)
     {
+
         State = BoardStates.Shifting;
         List<TileView> tiles = new List<TileView>();
         int nullCount = 0;
 
         for (int y = yStart; y < _ySize; y++)
-        { 
+        {
             TileView tile = _tileViews[x, y].GetComponent<TileView>();
             if (tile.Tile == null)
             {
@@ -309,6 +359,7 @@ internal class Board : MonoBehaviour
         return possibleTiles[Random.Range(0, possibleTiles.Count)];
     }
 
+
     public void SetBonusAndWaitForTile(IBonus bonus)
     {
         TileView.DeselectAll();
@@ -327,7 +378,51 @@ internal class Board : MonoBehaviour
         _bonus.Execute(tile, _tileViews);
         CancelBonus();
         FillNulls();
-        OnBonusEnd?.Invoke(true);
         TurnsCounter.Instance.Turns++;
+        OnBonusEnd?.Invoke(true);
+    }
+
+    public void CheckMovingTiles()
+    {
+        for (int x = 0; x < _xSize; x++)
+        {
+            for (int y = 0; y < _ySize; y++)
+            {
+                if (!_tileViews[x, y].IsAlreadyMoved &&
+                    _tileViews[x, y].MovingDirection() != Vector2.zero)
+                {
+                    MoveTile(_tileViews[x, y], _tileViews[x, y].MovingDirection());
+                }
+            }
+        }
+
+        for (int x = 0; x < _xSize; x++)
+        {
+            for (int y = 0; y < _ySize; y++)
+            {
+                _tileViews[x, y].IsAlreadyMoved = false;
+            }
+        }
+
+        IsThereMatches(true);
+    }
+
+    public void MoveTile(TileView tile, Vector2 direction)
+    {
+        tile.gameObject.SetActive(false);
+        RaycastHit2D hit = Physics2D.Raycast(tile.transform.position, direction);
+        tile.gameObject.SetActive(true);
+
+        TileView tempTileView;
+        if (hit.collider == null ||
+            !hit.collider.TryGetComponent(out tempTileView))
+        {
+            tile.Curses.ReverseMovingDirection();
+        }
+        else
+        {
+            Swap(tile, tempTileView, false);
+            tempTileView.IsAlreadyMoved = true;
+        }
     }
 }

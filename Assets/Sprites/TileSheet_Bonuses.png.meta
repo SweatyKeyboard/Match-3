@@ -225,8 +225,8 @@ TextureImporter:
       name: TileSheet_Bonuses_5
       rect:
         serializedVersion: 2
-        x: 0
-        y: 256
+        x: 1280
+        y: 1792
         width: 256
         height: 256
       alignment: 0
@@ -246,8 +246,8 @@ TextureImporter:
       name: TileSheet_Bonuses_6
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
+        x: 1536
+        y: 1792
         width: 256
         height: 256
       alignment: 0
@@ -267,8 +267,8 @@ TextureImporter:
       name: TileSheet_Bonuses_7
       rect:
         serializedVersion: 2
-        x: 1536
-        y: 0
+        x: 1792
+        y: 1792
         width: 256
         height: 256
       alignment: 0
@@ -288,8 +288,8 @@ TextureImporter:
       name: TileSheet_Bonuses_8
       rect:
         serializedVersion: 2
-        x: 1792
-        y: 0
+        x: 0
+        y: 1536
         width: 256
         height: 256
       alignment: 0
@@ -301,6 +301,426 @@ TextureImporter:
       bones: []
       spriteID: d59ec78428ade0b43a7ce516e05d0cad
       internalID: -1609445214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_9
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1536
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddded7ef203336345849b9c62862b37b
+      internalID: 258741424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_10
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1536
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffe59c8b05aaebb41af2830a033fd725
+      internalID: 1349911966
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_11
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1536
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03ba29d2dacd0b246ad1f7431fd7fc1c
+      internalID: -1591529502
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_12
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1536
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de07112fc5087e14f9b2517be6f34735
+      internalID: 1654751768
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_13
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 1536
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c570c2dfa3a407b4da87902e834b5bf7
+      internalID: -1968992721
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_14
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 1536
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dea6d47d946cab946b789a46a3f36b17
+      internalID: 1742230212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_15
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 1536
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 156429bd689b7114684fb3541c383af4
+      internalID: -1719949628
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e9b8ca5165d902f478854fef2b2adf5e
+      internalID: -39383655
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_17
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3d21bccec0edfb24c83a2faa2351f014
+      internalID: -247487259
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_18
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41fe836e620d7e44c8cc7d10ee0980fd
+      internalID: 256339280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_19
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd85a148d48ea6f41b25e28ae834919c
+      internalID: 1352693154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_20
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 646c106243c2242429820b6ba157f8bc
+      internalID: 307874938
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_21
+      rect:
+        serializedVersion: 2
+        x: 1280
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 029fe7ce2c75bac4cb7dc0dd88c6ae1a
+      internalID: -1955582202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_22
+      rect:
+        serializedVersion: 2
+        x: 1536
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b063f00ab39d6e845b4dee8e02bd0aad
+      internalID: -594782339
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_23
+      rect:
+        serializedVersion: 2
+        x: 1792
+        y: 1280
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7388b60911ea0bb47ab30e645f5b4c4d
+      internalID: 1121026756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_24
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 52fee104ed3253645bb4cc0b783e590a
+      internalID: -1799504823
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_25
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f8d87770818eaef489c3665d0388d2b1
+      internalID: 1490736107
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_26
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a17fb5cecaf2384593465a0025effa9
+      internalID: 2073076446
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_27
+      rect:
+        serializedVersion: 2
+        x: 768
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 199d6b5884dde994c9ed7bf14c63e10c
+      internalID: 346550637
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: TileSheet_Bonuses_28
+      rect:
+        serializedVersion: 2
+        x: 1024
+        y: 1024
+        width: 256
+        height: 256
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 247213ec9daa9b443a1c4036f6dc58ff
+      internalID: 2106894043
       vertices: []
       indices: 
       edges: []
@@ -317,13 +737,33 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       TileSheet_Bonuses_6: 1701427286
+      TileSheet_Bonuses_17: -247487259
+      TileSheet_Bonuses_21: -1955582202
+      TileSheet_Bonuses_11: -1591529502
+      TileSheet_Bonuses_19: 1352693154
+      TileSheet_Bonuses_28: 2106894043
+      TileSheet_Bonuses_18: 256339280
+      TileSheet_Bonuses_20: 307874938
+      TileSheet_Bonuses_24: -1799504823
+      TileSheet_Bonuses_16: -39383655
+      TileSheet_Bonuses_13: -1968992721
+      TileSheet_Bonuses_15: -1719949628
+      TileSheet_Bonuses_23: 1121026756
+      TileSheet_Bonuses_12: 1654751768
       TileSheet_Bonuses_3: 1893880197
       TileSheet_Bonuses_4: 1511411570
+      TileSheet_Bonuses_14: 1742230212
+      TileSheet_Bonuses_10: 1349911966
       TileSheet_Bonuses_2: 1248107638
+      TileSheet_Bonuses_9: 258741424
       TileSheet_Bonuses_0: 1783808190
       TileSheet_Bonuses_7: 1118374788
       TileSheet_Bonuses_5: 1603630988
+      TileSheet_Bonuses_27: 346550637
+      TileSheet_Bonuses_25: 1490736107
+      TileSheet_Bonuses_22: -594782339
       TileSheet_Bonuses_8: -1609445214
+      TileSheet_Bonuses_26: 2073076446
       TileSheet_Bonuses_1: 682299354
   spritePackingTag: 
   pSDRemoveMatte: 0

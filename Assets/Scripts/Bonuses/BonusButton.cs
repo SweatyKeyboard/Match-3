@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -16,6 +17,9 @@ public class BonusButton : MonoBehaviour
 
     private bool _isToggled = false;
     private static bool _isAnyBonusSelected = false;
+
+    private bool _isHelperShowed = false;
+    private bool _isReleased = false;
 
     private void Start()
     {
@@ -64,7 +68,8 @@ public class BonusButton : MonoBehaviour
                 _prices[2].text = _bonusEffect.Price.Prices[2].ToString();
 
                 _prices[0].color = _priceTiles[0].Color;
-                _prices[2].color = _priceTiles[1].Color;
+                _prices[1].color = _priceTiles[1].Color;
+                _prices[2].color = _priceTiles[2].Color;
                 break;
 
             case 1:
@@ -105,10 +110,10 @@ public class BonusButton : MonoBehaviour
         Board.Instance.CancelBonus();
         _backImage.color = Color.white;
         _isToggled = false;
+        Board.Instance.OnBonusEnd -= Unclick;
 
         if (isSucceeded)
         {
-            Board.Instance.OnBonusEnd -= Unclick;
             for (int i = 0; i < 3 - _bonusEffect.Price.GetZeroesCount(); i++)
             {
                 _priceTiles[i].Mana -= _bonusEffect.Price.Prices[i];
@@ -128,8 +133,6 @@ public class BonusButton : MonoBehaviour
 
     public void ExecuteBonus()
     {
-        if (_unlocksSinceScore <= ScoreCounter.Instance.Score)
-        {
             if (IsEnoughMana())
             {
                 if (!_isToggled && !_isAnyBonusSelected)
@@ -141,6 +144,44 @@ public class BonusButton : MonoBehaviour
                     Unclick(false);
                 }
             }
+    }
+
+
+    private void OnMouseDown()
+    {
+        if (_unlocksSinceScore <= ScoreCounter.Instance.Score)
+        {
+            StartCoroutine(ShowHelpWithPause(1f));
+            _isReleased = false;
+        }
+    }
+
+    private void OnMouseUp()
+    {
+        if (_unlocksSinceScore <= ScoreCounter.Instance.Score)
+        {
+            StopAllCoroutines();
+            _isReleased = true;
+            if (!_isHelperShowed)
+            {
+                ExecuteBonus();
+            }
+            else
+            {
+                HintScreen.Instance.gameObject.SetActive(false);
+                _isHelperShowed = false;
+            }
+        }
+    }
+
+    IEnumerator ShowHelpWithPause(float holdDurationToShow)
+    {
+        yield return new WaitForSeconds(holdDurationToShow);
+        if (!_isReleased)
+        {
+            _isHelperShowed = true;
+            HintScreen.Instance.gameObject.SetActive(true);
+            HintScreen.Instance.SetData(_bonusEffect.Helper);
         }
     }
 }

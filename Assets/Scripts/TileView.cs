@@ -7,14 +7,19 @@ public class TileView : MonoBehaviour
     [SerializeField] private ParticleSystem _destroyParticles;
 
     [SerializeField] private Transform _iceLayer; 
+    [SerializeField] private Transform _timeLayer;
+    [SerializeField] private Transform _arrowLayer;
 
 
     private Tile _tile;
     private TileCurses _curses = new TileCurses();
+    private TileEffects _effects = new TileEffects();
 
     private float _scaleInTheBounds = 0.8f;
 
     private bool _isLocked = false;
+    
+    public bool IsAlreadyMoved { get; set; }
 
     private static TileView _previousTile;
     public Tile Tile 
@@ -33,7 +38,16 @@ public class TileView : MonoBehaviour
         set
         {
             _curses = value;
-            CheckCurses();
+        }
+    }
+
+    public TileEffects Effects
+    {
+        get => _effects;
+        set
+        {
+            _effects = value;
+            CheckEffects();
         }
     }
 
@@ -41,11 +55,13 @@ public class TileView : MonoBehaviour
     private void Awake()
     {
         _curses.OnChanged += CheckCurses;
+        _effects.OnChanged += CheckEffects;
     }
 
     private void OnDestroy()
     {
         _curses.OnChanged -= CheckCurses;
+        _effects.OnChanged -= CheckEffects;
     }
 
     private void OnMouseDown()
@@ -76,16 +92,30 @@ public class TileView : MonoBehaviour
             Board.Instance.ExecuteBonus(this);
         }
     }
-    private void CheckCurses()
+    public void CheckCurses()
     {
         _isLocked = _curses.IsIced;
         _iceLayer.gameObject.SetActive(_curses.IsIced);
+
+        _arrowLayer.gameObject.SetActive(_curses.MovingDirection != Vector2.zero);
+        _arrowLayer.rotation = Quaternion.FromToRotation(Vector2.right, _curses.MovingDirection);
     }
 
     private void ClearCurses()
     {
         _curses.ClearCurses();
         CheckCurses();
+    }
+
+    private void CheckEffects()
+    {
+        _timeLayer.gameObject.SetActive(_effects.IsTriplingTime);
+    }
+
+    private void ClearEffects()
+    {
+        _effects.Clear();
+        CheckEffects();
     }
 
     private void Select()
@@ -110,12 +140,18 @@ public class TileView : MonoBehaviour
             _previousTile.Deselect();
             CheckCurses();
             Board.Instance.FindAllMatchesForTile(this);
+            
         }
         else
         {
             _previousTile.Deselect();
             Select();
         }
+    }
+
+    public Vector2 MovingDirection()
+    {
+        return Curses.MovingDirection;
     }
 
     private void UpdateView()
@@ -136,6 +172,7 @@ public class TileView : MonoBehaviour
         particlesMain.startColor = Tile.Color;
 
         ClearCurses();
+        ClearEffects();
         Tile = null;
     }
 

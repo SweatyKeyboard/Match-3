@@ -17,18 +17,22 @@ public abstract class a_DestroyingBonus : IBonus
                 RaycastHit2D[] rays = Physics2D.RaycastAll(tileView.transform.position, _directions[i]);
                 foreach (RaycastHit2D ray in rays)
                 {
-                    if (ray.collider != null)
+                    TileView tempTile;
+                    if (ray.collider != null &&
+                        ray.collider.TryGetComponent(out tempTile))
                     {
-                        tilesToDestroy.Add(ray.collider.GetComponent<TileView>());
+                        tilesToDestroy.Add(tempTile);
                     }
                 }
             }
             else
             {
                 RaycastHit2D ray = Physics2D.Raycast(tileView.transform.position, _directions[i]);
-                if (ray.collider != null)
+                TileView tempTile;
+                if (ray.collider != null &&
+                    ray.collider.TryGetComponent(out tempTile))
                 {
-                    tilesToDestroy.Add(ray.collider.GetComponent<TileView>());
+                    tilesToDestroy.Add(tempTile);
                 }
 
             }
