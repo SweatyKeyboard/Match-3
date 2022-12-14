@@ -10,10 +10,13 @@ internal class Board : MonoBehaviour
     [SerializeField] private Tile[] _tiles;
     [SerializeField] private int _xSize, _ySize;
     [SerializeField] private TileView _tilePrefab;
+    [SerializeField] private AudioClip _matchSound;
 
     private TileView[,] _tileViews;
     private RectTransform rectTransform;
+
     private IBonus _bonus;
+    private AudioClip _bonusSound;
 
     private float _width;
     private float _height;
@@ -222,6 +225,8 @@ internal class Board : MonoBehaviour
             {
                 _isMatchFound = true;
 
+                AudioPlayer.PlaySoundWithRandomPitch(_matchSound);
+
                 int timeModifier = 1;
                 foreach (TileView matchingTile in matchingTiles)
                 {
@@ -276,7 +281,6 @@ internal class Board : MonoBehaviour
                 if (_tileViews[x, y].Tile == null)
                 {
                     yield return StartCoroutine(ShiftTilesDown(x, y));
-                    break;
                 }
             }
         }
@@ -303,18 +307,23 @@ internal class Board : MonoBehaviour
 
     private IEnumerator ShiftTilesDown(int x, int yStart, float shiftDelay = .055f)
     {
-
         State = BoardStates.Shifting;
         List<TileView> tiles = new List<TileView>();
         int nullCount = 0;
+        bool isCounterStopped = false;
 
         for (int y = yStart; y < _ySize; y++)
         {
             TileView tile = _tileViews[x, y].GetComponent<TileView>();
-            if (tile.Tile == null)
+            if (tile.Tile == null && !isCounterStopped)
             {
                 nullCount++;
             }
+            else
+            {
+                isCounterStopped = true;
+            }
+
             tiles.Add(tile);
         }
 
@@ -360,10 +369,11 @@ internal class Board : MonoBehaviour
     }
 
 
-    public void SetBonusAndWaitForTile(IBonus bonus)
+    public void SetBonusAndWaitForTile(IBonus bonus, AudioClip sound)
     {
         TileView.DeselectAll();
         _bonus = bonus;
+        _bonusSound = sound;
         State = BoardStates.BonusAwaiting;
     }
 
@@ -376,6 +386,7 @@ internal class Board : MonoBehaviour
     public void ExecuteBonus(TileView tile)
     {
         _bonus.Execute(tile, _tileViews);
+        AudioPlayer.PlaySound(_bonusSound);
         CancelBonus();
         FillNulls();
         TurnsCounter.Instance.Turns++;

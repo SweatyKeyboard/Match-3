@@ -16,3 +16,4 @@ MonoBehaviour:
   _action: 15
   _price: {fileID: 11400000, guid: 1dd5f2fbb3a6330439901f2fb792be1a, type: 2}
   _helper: {fileID: 11400000, guid: 723e9d1d8b961b044836a0721deb61de, type: 2}
+  _executeSound: {fileID: 8300000, guid: f65ebf2f20ff3f149a3fce3c5e715461, type: 3}

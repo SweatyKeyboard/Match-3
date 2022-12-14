@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class TripleTimeMark : IBonus
 {
     public void Execute(TileView tileView, TileView[,] field)

@@ -23,6 +23,7 @@ public class TurnsCounter : MonoBehaviour
 
     private void Awake()
     {
+        _turns = 0;
         Instance = this;
         _text = GetComponent<TMP_Text>();
         UpdateText();

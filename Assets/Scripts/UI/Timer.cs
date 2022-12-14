@@ -5,8 +5,10 @@ using System;
 [RequireComponent(typeof(TMP_Text))]
 public class Timer : MonoBehaviour
 {
-    private static float _time = 150;
+    private const float STARTTIME = 150f;
+    private static float _time;
     private TMP_Text _text;
+    private bool _isStoped = false;
 
     public static Timer Instance { get; private set; }
     public float SecondsLeft
@@ -21,8 +23,11 @@ public class Timer : MonoBehaviour
 
     private string FormattedTime => TimeSpan.FromSeconds(_time).ToString(@"mm\:ss");
 
+    public event Action OnTimerEnd;
+
     private void Awake()
     {
+        _time = STARTTIME;
         Instance = this;
         _text = GetComponent<TMP_Text>();
         UpdateText();
@@ -30,8 +35,18 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        _time -= Time.deltaTime;
-        UpdateText();
+        if (!_isStoped)
+        {
+            _time -= Time.deltaTime;
+            UpdateText();
+
+            if (_time <= 0)
+            {
+                Debug.Log("Time!");
+                OnTimerEnd?.Invoke();
+                _isStoped = true;
+            }
+        }  
     }
     private void UpdateText()
     {

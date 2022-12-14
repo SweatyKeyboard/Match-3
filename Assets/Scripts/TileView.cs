@@ -10,6 +10,8 @@ public class TileView : MonoBehaviour
     [SerializeField] private Transform _timeLayer;
     [SerializeField] private Transform _arrowLayer;
 
+    [SerializeField] private AudioClip _clickSound;
+
 
     private Tile _tile;
     private TileCurses _curses = new TileCurses();
@@ -122,12 +124,14 @@ public class TileView : MonoBehaviour
     {
         _spriteRenderer.color = new Color(0.7f, 0.7f, 0.7f, 0.7f);
         _previousTile = this;
+        AudioPlayer.PlaySound(_clickSound);
     }
 
     private void Deselect()
     {
         _spriteRenderer.color = new Color(1f, 1f, 1f, 1f);
         _previousTile = null;
+        AudioPlayer.PlaySound(_clickSound);
     }
 
     private void TrySwap()

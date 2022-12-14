@@ -12,6 +12,8 @@ public class BonusButton : MonoBehaviour
     [SerializeField] private TMP_Text[] _prices;
     [SerializeField] private int _unlocksSinceScore;
 
+    [SerializeField] private AudioClip _clickSound;
+
     private Tile[] _priceTiles = new Tile[3];
     private Image _backImage;
 
@@ -123,9 +125,11 @@ public class BonusButton : MonoBehaviour
 
     private void Click()
     {
+        AudioPlayer.PlaySound(_clickSound);
+
         _isAnyBonusSelected = true;
         Board.Instance.OnBonusEnd += Unclick;
-        Board.Instance.SetBonusAndWaitForTile(_bonusEffect.Bonus);
+        Board.Instance.SetBonusAndWaitForTile(_bonusEffect.Bonus, _bonusEffect.Sound);
         _backImage.color = new Color(0.6f, 0.7f, 0.6f);
         _isToggled = true;        
     }

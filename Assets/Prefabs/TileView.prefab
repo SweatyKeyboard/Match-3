@@ -411,6 +411,7 @@ MonoBehaviour:
   _iceLayer: {fileID: 4621273287841437516}
   _timeLayer: {fileID: 2543461156677916617}
   _arrowLayer: {fileID: 8847530317592390990}
+  _clickSound: {fileID: 8300000, guid: 8e0ff00cc8935e7459f3adbf1e41c300, type: 3}
 --- !u!58 &1662634677916211769
 CircleCollider2D:
   m_ObjectHideFlags: 0

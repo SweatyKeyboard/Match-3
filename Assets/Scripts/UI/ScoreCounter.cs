@@ -22,6 +22,7 @@ public class ScoreCounter : MonoBehaviour
 
     private void Awake()
     {
+        _score = 0;
         Instance = this;
         _text = GetComponent<TMP_Text>();
         UpdateText();

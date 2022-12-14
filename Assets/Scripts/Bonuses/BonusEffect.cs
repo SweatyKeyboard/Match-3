@@ -7,6 +7,7 @@ public class BonusEffect : ScriptableObject
     [SerializeField] private Bonuses _action;
     [SerializeField] private BonusPrice _price;
     [SerializeField] private Helper _helper;
+    [SerializeField] private AudioClip _executeSound;
 
     public Helper Helper => _helper;
 
@@ -14,73 +15,98 @@ public class BonusEffect : ScriptableObject
     {
         get
         {
-            switch(_action)
+            IBonus bonus;
+            switch (_action)
             {
                 case Bonuses.RandomizeTile:
-                    return new RandomizingBonus();
+                    bonus = new RandomizingBonus();
+                    break;
 
                 case Bonuses.Explode9:
-                    return new Explode9();
+                    bonus = new Explode9();
+                    break;
 
                 case Bonuses.DestroyVertical:
-                    return new DestroyVertical();
+                    bonus = new DestroyVertical();
+                    break;
 
                 case Bonuses.DestroyHorizontal:
-                    return new DestroyHorizontal();
+                    bonus = new DestroyHorizontal();
+                    break;
 
                 case Bonuses.DestroyTile:
-                    return new DestroyTile();
+                    bonus = new DestroyTile();
+                    break;
 
                 case Bonuses.DestroyDiagonal1:
-                    return new DestroyDiagonal1();
+                    bonus = new DestroyDiagonal1();
+                    break;
 
                 case Bonuses.DestroyDiagonal2:
-                    return new DestroyDiagonal2();
+                    bonus = new DestroyDiagonal2();
+                    break;
 
                 case Bonuses.TripleTime:
-                    return new TripleTimeMark();
+                    bonus = new TripleTimeMark();
+                    break;
 
                 case Bonuses.TimeForType:
-                    return new TimeForTileType();
+                    bonus = new TimeForTileType();
+                    break;
 
                 case Bonuses.DestroyCrossDiagonal:
-                    return new DestroyCrossDiagonal();
+                    bonus = new DestroyCrossDiagonal();
+                    break;
 
                 case Bonuses.DestroyCrossOrthogonal:
-                    return new DestroyCrossOrthogonal();
+                    bonus = new DestroyCrossOrthogonal();
+                    break;
 
                 case Bonuses.MoveUp:
-                    return new MoveUp();
+                    bonus = new MoveUp();
+                    break;
 
                 case Bonuses.MoveUpRight:
-                    return new MoveUpRight();
+                    bonus = new MoveUpRight();
+                    break;
 
                 case Bonuses.MoveRight:
-                    return new MoveRight();
+                    bonus = new MoveRight();
+                    break;
 
                 case Bonuses.MoveDownRight:
-                    return new MoveRightDown();
+                    bonus = new MoveRightDown();
+                    break;
 
                 case Bonuses.MoveDown:
-                    return new MoveDown();
+                    bonus = new MoveDown();
+                    break;
 
                 case Bonuses.MoveDownLeft:
-                    return new MoveDownLeft();
+                    bonus = new MoveDownLeft();
+                    break;
 
                 case Bonuses.MoveLeft:
-                    return new MoveLeft();
+                    bonus = new MoveLeft();
+                    break;
 
                 case Bonuses.MoveUpLeft:
-                    return new MoveLeftUp();
+                    bonus = new MoveLeftUp();
+                    break;
 
                 case Bonuses.DestroyTileType:
-                    return new DestroyTileType();
+                    bonus = new DestroyTileType();
+                    break;
 
                 default:
                     return null;
             }
+
+            return bonus;
         }
     }
+
+    public AudioClip Sound => _executeSound;
     public BonusPrice Price => _price;
     public Sprite Icon => _icon;
 }

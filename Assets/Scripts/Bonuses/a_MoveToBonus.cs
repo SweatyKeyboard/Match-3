@@ -36,7 +36,6 @@ public class a_MoveToBonus : IBonus
         {
             Board.Instance.Swap(movingTiles[i], movingTiles[i + 1], false);
         }
-        Board.Instance.Swap(movingTiles[movingTiles.Count - 1], movingTiles[0], false);
 
     }
 }
