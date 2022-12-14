@@ -389,7 +389,7 @@ internal class Board : MonoBehaviour
         AudioPlayer.PlaySound(_bonusSound);
         CancelBonus();
         FillNulls();
-        TurnsCounter.Instance.Turns++;
+        //TurnsCounter.Instance.Turns++;
         OnBonusEnd?.Invoke(true);
     }
 

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bcc597090f36b6449fe980bd7f14f7c, type: 3}
   m_Name: H_destrType
   m_EditorClassIdentifier: 
-  _header: 
-  _description: 
-  _image: {fileID: 0}
+  _header: Green bomb
+  _description: Destroys all tiles of the selected type (without gaining score for
+    them)
+  _image: {fileID: 21300000, guid: fd2ca47f09e48144fb6d2d0086bd907c, type: 3}
