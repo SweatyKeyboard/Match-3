@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e06cb363c56576247ba729991e501e82, type: 3}
+  m_Name: B_sniper
+  m_EditorClassIdentifier: 
+  _icon: {fileID: 1511411570, guid: 0a9dc808e88e5624393034581390a22a, type: 3}
+  _action: 4
+  _price: {fileID: 11400000, guid: 2ec47d811f27a404891d68df9c1f08c8, type: 2}
+  _helper: {fileID: 11400000, guid: 1191bf2d4e6c3c14faaa726bc9314fc3, type: 2}
+  _executeSound: {fileID: 8300000, guid: 8f39f4103922abb4baa827ae87b93c6d, type: 3}
